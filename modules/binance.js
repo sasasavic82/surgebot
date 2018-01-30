@@ -176,7 +176,9 @@ class Binance {
         let termString = rateOfChange >= 0.00 ? `^#^g^w${rateOfChange}^` : `^#^r^w${rateOfChange}^`;
         term.moveTo(25, 5, `^yCHANGE:^ ${termString} ^yMOVEMENT:^s ^g${this.model.movement.rising} UP^ ^r${this.model.movement.falling} DOWN^`);
 
-        if (rateOfChange >= Number(this.config.takeProfitPercentage).toExponential(2)) {
+        //term.moveTo(1, 10, `${rateOfChange} >= ${this.config.takeProfitPercentage.toFixed(2)} = ${}
+
+        if (rateOfChange >= Number(this.config.takeProfitPercentage).toFixed(2)) {
             this._exit();
             await this._placeOrder('SELL', currentPrice);
         }
