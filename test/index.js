@@ -34,7 +34,7 @@ before(function(done) {
 
     // validate other
     assert(typeof Number(process.env.MONITORING_INTERVAL) === 'number', 'invalid MONITORING_INTERVAL from .env,  MONITORING_INTERVAL should be a number');
-    assert(typeof Number(process.env.TAKE_PROFIT_PERCENTAGE) === 'number' && (Number(process.env.TAKE_PROFIT_PERCENTAGE) >=1 && Number(process.env.TAKE_PROFIT_PERCENTAGE) <= 100), 'invalid TAKE_PROFIT_PERCENTAGE from .env,  TAKE_PROFIT_PERCENTAGE should be a number between 1 - 100');
+    //assert(typeof Number(process.env.TAKE_PROFIT_PERCENTAGE) === 'number' && (Number(process.env.TAKE_PROFIT_PERCENTAGE) >=1 && Number(process.env.TAKE_PROFIT_PERCENTAGE) <= 100), 'invalid TAKE_PROFIT_PERCENTAGE from .env,  TAKE_PROFIT_PERCENTAGE should be a number between 1 - 100');
     done();
 });
 
