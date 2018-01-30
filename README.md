@@ -8,36 +8,7 @@ IT IS NOT MY RESPONSIBILITY IF YOU GAIN/LOSE MONEY.  THERE IS NO SUCH THING AS P
 1. Create an `.env` file in your projects root directory.
 2. Copy and paste the below:
 
-    ########### REQUIRED ##############
 
-    #Binance
-    BINANCE_API_KEY=
-    BINANCE_API_SECRET=
-    BINANCE_TWITTER_ACCOUNT=binance_2017
-    BINANCE_BASE_CURRENCY=BTC
-    # If using BNB for fee, then change the below value to 0.0005
-    BINANCE_FEE=0.001
-
-    # Values: [0.0 - 1.0] WARNING: 0.2 = 20% of your existing BTC value in your binance account
-    BINANCE_PLACEMENT_PERCENTAGE=0.2
-
-
-    # Twitter
-    TWITTER_CONSUMER_KEY=
-    TWITTER_CONSUMER_SECRET=
-    TWITTER_ACCESS_TOKEN=2
-    TWITTER_ACCESS_TOKEN_SECRET=
-    # Twitter feed polling (in seconds)
-    MONITORING_INTERVAL=10
-
-    ####################################
-
-    #OPTIONAL
-    TWILIO_ENABLED=false
-    TWILIO_ACCOUNT_SID=""
-    TWILIO_AUTH_TOKEN=""
-    TWILIO_FROM_NUMBER=""
-    TWILIO_TO_NUMBER=""
 
 3. Fill out *REQUIRED* environment variables
 ---> Sign up for Binance API here if you haven't already: https://www.binance.com/userCenter/createApi.html
