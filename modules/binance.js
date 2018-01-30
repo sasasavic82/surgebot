@@ -55,6 +55,10 @@ class Binance {
     }
   }
 
+  static binance() {
+      return binance;
+  }
+
   async coinDetected(coin) {
       this.surgedCoin = coin;
       this.pair = coin + this.config.baseCurrency;
