@@ -6,10 +6,7 @@ IT IS NOT MY RESPONSIBILITY IF YOU GAIN/LOSE MONEY.  THERE IS NO SUCH THING AS P
 
 ### Setup
 1. Create an `.env` file in your projects root directory.
-2. Copy and paste the below:
-
-
-
+2. Copy and paste `template.env` into `.env`
 3. Fill out *REQUIRED* environment variables
 ---> Sign up for Binance API here if you haven't already: https://www.binance.com/userCenter/createApi.html
 ---> Sign up for Twitter API here if you haven't already: https://apps.twitter.com/
@@ -30,7 +27,7 @@ SurgeBot monitors Binance's twitter account (`@binance_2017`) for a specific twe
 This command runs tests before starting the bot. It then kicks off a loop where it monitors `@binance_2017` twitter account, and then subsequently tries to place order.
 
 ##### `Ctrl + C`
-Pressing these two keys will terminate W.O.L.F.  Pay particular attention to where in the function loop W.O.L.F was terminated.  You may need to login to https://www.binance.com/userCenter/openOrders.html to close any open orders that W.O.L.F is no longer watching for you.
+Pressing these two keys will terminate SurgeBot. WARNING: If a BUY order has been placed, you may kill of an attempt to execute a profit strategy, thereby holding a position in the newly listed coin.
 
 
 ### Issues?
