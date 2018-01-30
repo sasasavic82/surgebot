@@ -1,13 +1,13 @@
 {
-  "name": "botbot",
+  "name": "surgebot",
   "version": "1.0.0",
-  "description": "",
+  "description": "Bot that detects when a new coin is added to an exchange by monitoring social media (Twitter), and attempts to put in an order as the coin is getting added to the exchange (Binance)",
   "main": "index.js",
   "scripts": {
     "test": "mocha",
     "start": "npm test && node ."
   },
-  "author": "",
+  "author": "Sasa Savic (savic.s82@gmail.com) Twitter: @sasasavic82",
   "license": "ISC",
   "dependencies": {
     "binance-api-node": "^0.5.0",
