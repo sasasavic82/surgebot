@@ -64,10 +64,11 @@ class Binance {
     }
 
     async coinDetected(coin) {
+        this._initScreen();
         this.surgedCoin = coin;
         this.pair = coin + this.config.baseCurrency;
 
-        term.moveTo(1, 5, `^yDETECTED:^ ^#^g^w${coin}^`);
+        term.moveTo(1, 4, `^yDETECTED:^ ^#^g^w${coin}^ `);
 
         await this._coinOperational(async (price) => {
             await this._placeOrder('BUY', price);
@@ -85,12 +86,12 @@ class Binance {
             const price = (await this.binance.prices())[this.pair];
 
             if (!price) {
-                term.moveTo(1, 6, `^yMARKET VALUE:^ ^#^r^wNone^`);
+                term.moveTo(1, 5, `^yMARKET VALUE:^ ^rNone^`);
                 this.detectingPrice = false;
                 return;
             }
 
-            term.moveTo(1, 6, `^yMARKET VALUE:^ ^#^g^w${price}^`);
+            term.moveTo(1, 5, `^yMARKET VALUE:^ ^g${price}^`);
 
             clearInterval(this.interval);
 
@@ -141,7 +142,7 @@ class Binance {
         var rateOfChange = this._rateOfChange(this.model.buyPrice, this.model.currentPrice);
 
         let termString = rateOfChange >= 0.00 ? `^#^g^w${rateOfChange.toFixed(2)}^` : `^#^r^w${rateOfChange.toFixed(2)}^`;
-        term.moveTo(30, 6, `^yCHANGE:^ ${termString}`);
+        term.moveTo(25, 5, `^yCHANGE:^ ${termString} ^yMOVEMENT:^s ^g${this.model.movement.rising} UP^ ^r${this.model.movement.falling} DOWN^`);
 
         if (rateOfChange >= 0.20 && rateOfChange <= 0.40) {
             this._exit();
@@ -175,8 +176,8 @@ class Binance {
         }
 */
 
-        this._log(this.model.movement);
-        this._log(rateOfChange.toFixed(2));
+        //this._log(this.model.movement);
+        //this._log(rateOfChange.toFixed(2));
 
         this.processing = false;
 
@@ -200,9 +201,9 @@ class Binance {
 
     _initScreen() {
         term.clear();
-        term.moveTo(1, 1, date(new Date(), "dddd, mmmm dS, yyyy, h:MM:ss TT"));
-        term.moveTo(1, 3, `^#^r^wSurgeBot Initialized and read.^`);
-        term.moveTo(1, 5, `^yDETECTED:^ ^#^r^wNone^`);
+        //term.moveTo(1, 1, date(new Date(), "dddd, mmmm dS, yyyy, h:MM:ss TT"));
+        term.moveTo(1, 2, `^#^b^wSurgeBot Initialized and ready!^`);
+        term.moveTo(1, 4, `^yDETECTED:^ ^#^r^wNone^`);
     }
 
     _exit() {
