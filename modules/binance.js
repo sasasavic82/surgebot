@@ -4,7 +4,6 @@
 const _ = require('lodash');
 const term = require('terminal-kit').terminal;
 const date = require('dateformat');
-const Stream = require('stream');
 const slayer = require('slayer');
 
 const BinanceApi = require('binance-api-node');
@@ -18,35 +17,43 @@ class Binance {
     constructor(config) {
         this.config = config;
         this.binance = binance;
-        this.model = {
-            prices: [],
-            buyPrice: 0,
-            lastPrice: 0,
-            currentPrice: 0,
-            movement: {
-                rising: 0,
-                falling: 0
-            },
-            initializePrice: function (price) {
-                this.prices.push(price);
-                this.buyPrice = price;
-                this.currentPrice = price;
-            },
-            swap: function (newPrice) {
-                this.lastPrice = this.currentPrice;
-                this.currentPrice = newPrice;
-            }
-        }
-        this.orderIncrement = 0;
-        this.ticker = null;
-        this.priceDetected = false;
-        this._initScreen();
         this._init();
     }
 
     async _init() {
         try {
-
+            this._initScreen();
+            this.model = {
+                prices: [],
+                buyPrice: 0,
+                lastPrice: 0,
+                currentPrice: 0,
+                movement: {
+                    rising: 0,
+                    falling: 0
+                },
+                initializePrice: function (price) {
+                    this.prices.push(price);
+                    this.buyPrice = price;
+                    this.currentPrice = price;
+                },
+                swap: function (newPrice) {
+                    this.lastPrice = this.currentPrice;
+                    this.currentPrice = newPrice;
+                },
+                reset: function() {
+                    this.model.prices = [];
+                    this.model.buyPrice = 0;
+                    this.model.lastPrice = 0;
+                    this.model.currentPrice = 0;
+                    this.model.movement.rising = 0;
+                    this.model.movement.falling = 0;
+                }
+            }
+            this.orderIncrement = 0;
+            this.ticker = null;
+            this.priceDetected = false;
+            this.detectingPrice = false;
             this.accountInfo = await this.binance.accountInfo();
             this.exchangeInfo = await this.binance.exchangeInfo();
             this.freeBudget =
@@ -55,8 +62,6 @@ class Binance {
                 }).free)).toFixed(8);
             this.netBudget =
                 ((this.freeBudget * this.config.placementPercentage) - this.config.fee).toFixed(8);
-
-            this._setupStreaming();
 
         } catch (e) {
             //this._log(e);
@@ -67,18 +72,8 @@ class Binance {
         return binance;
     }
 
-    _setupStreaming() {
-        this.sourceFinancialStream = new Stream();
-        this.sourceFinancialStream.readable = true;
-
-        this.sourceFinancialStream
-            .pipe(slayer().createReadStream())
-            .on('error', err => console.error(err))
-            .on('data', _detectProfitSpike);
-    }
-
     async coinDetected(coin) {
-        this._initScreen();
+        
         this.surgedCoin = coin;
         this.pair = coin + this.config.baseCurrency;
 
@@ -181,6 +176,7 @@ class Binance {
         if (rateOfChange >= Number(this.config.takeProfitPercentage).toFixed(2)) {
             this._exit();
             await this._placeOrder('SELL', currentPrice);
+            this._reset();
         }
 
         this.processing = false;
@@ -197,6 +193,10 @@ class Binance {
             quantity += 0.001;
         };
         return quantity.toFixed(2);
+    }
+
+    _reset() {
+        this._init();
     }
 
     _log(text) {
