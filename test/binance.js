@@ -1,6 +1,5 @@
 require('dotenv').config();
 const assert = require('assert');
-const binance = require('../modules/binance.js').Binance;
 const Binance = require('../modules/binance');
 
 describe('Binance', function() {
