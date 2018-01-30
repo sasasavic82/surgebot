@@ -20,7 +20,7 @@ before(function(done) {
     assert(typeof Number(process.env.BINANCE_PLACEMENT_PERCENTAGE) === 'number' && (Number(process.env.BINANCE_PLACEMENT_PERCENTAGE) >= 0.0 && Number(process.env.BINANCE_PLACEMENT_PERCENTAGE) <= 1.0), 'invalid BINANCE_PLACEMENT_PERCENTAGE from .env,  BINANCE_PLACEMENT_PERCENTAGE should be only be a 1 decimal fraction between 0.0 - 1.0');
     //validate twilio
     const TWILIO_ENABLED = process.env.TWILIO_ENABLED === 'true' || process.env.TWILIO_ENABLED === 'TRUE';
-    
+
     if (TWILIO_ENABLED) {
         assert(process.env.TWILIO_ACCOUNT_SID, 'missing TWILIO_ACCOUNT_SID from .env');
         assert(process.env.TWILIO_AUTH_TOKEN, 'missing TWILIO_AUTH_TOKEN from .env');
@@ -34,6 +34,7 @@ before(function(done) {
 
     // validate other
     assert(typeof Number(process.env.MONITORING_INTERVAL) === 'number', 'invalid MONITORING_INTERVAL from .env,  MONITORING_INTERVAL should be a number');
+    assert(typeof Number(process.env.TAKE_PROFIT_PERCENTAGE) === 'number' && (Number(process.env.TAKE_PROFIT_PERCENTAGE) >=1 && Number(process.env.TAKE_PROFIT_PERCENTAGE) <= 100), 'invalid TAKE_PROFIT_PERCENTAGE from .env,  TAKE_PROFIT_PERCENTAGE should be a number between 1 - 100');
     done();
 });
 

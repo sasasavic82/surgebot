@@ -9,7 +9,8 @@ const coin = require('./modules/coin');
 const CONFIG = {
     baseCurrency: process.env.BINANCE_BASE_CURRENCY || 'BTC',
     fee: process.env.BINANCE_FEE || 0.0005,
-    placementPercentage: process.env.BINANCE_PLACEMENT_PERCENTAGE | 1
+    placementPercentage: process.env.BINANCE_PLACEMENT_PERCENTAGE | 1,
+    takeProfitPercentage: process.env.TAKE_PROFIT_PERCENTAGE | 50
 };
 
 (async (config) => {
