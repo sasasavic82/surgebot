@@ -8,9 +8,9 @@ IT IS NOT MY RESPONSIBILITY IF YOU GAIN/LOSE MONEY.  THERE IS NO SUCH THING AS P
 1. Create an `.env` file in your projects root directory.
 2. Copy and paste `template.env` into `.env`
 3. Fill out *REQUIRED* environment variables
----> Sign up for Binance API here if you haven't already: https://www.binance.com/userCenter/createApi.html
----> Sign up for Twitter API here if you haven't already: https://apps.twitter.com/
----> Sign up for Twillio API here if you haven't already (optional, if you want to receive SMS notifications): https://www.twilio.com/try-twilio
+- Sign up for Binance API here if you haven't already: https://www.binance.com/userCenter/createApi.html
+- Sign up for Twitter API here if you haven't already: https://apps.twitter.com/
+- Sign up for Twillio API here if you haven't already (optional, if you want to receive SMS notifications): https://www.twilio.com/try-twilio
 4. `npm i`
 5. `npm start`
 
