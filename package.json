@@ -17,7 +17,9 @@
     "lodash": "^4.17.4",
     "dateformat": "^3.0.2",
     "terminal-kit": "^1.14.3",
-    "monitor-twitter": "^1.0.0"
+    "monitor-twitter": "^1.0.0",
+    "stream": "^0.0.2",
+    "slayer": "^1.0.1"
   },
   "devDependencies": {
     "mocha": "^4.1.0"

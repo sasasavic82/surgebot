@@ -4,6 +4,8 @@
 const _ = require('lodash');
 const term = require('terminal-kit').terminal;
 const date = require('dateformat');
+const Stream = require('stream');
+const slayer = require('slayer');
 
 const BinanceApi = require('binance-api-node');
 
@@ -54,6 +56,8 @@ class Binance {
             this.netBudget =
                 ((this.freeBudget * this.config.placementPercentage) - this.config.fee).toFixed(8);
 
+            this._setupStreaming();
+
         } catch (e) {
             //this._log(e);
         }
@@ -61,6 +65,16 @@ class Binance {
 
     static binance() {
         return binance;
+    }
+
+    _setupStreaming() {
+        this.sourceFinancialStream = new Stream();
+        this.sourceFinancialStream.readable = true;
+
+        this.sourceFinancialStream
+            .pipe(slayer().createReadStream())
+            .on('error', err => console.error(err))
+            .on('data', _detectProfitSpike);
     }
 
     async coinDetected(coin) {
@@ -122,10 +136,27 @@ class Binance {
     }
 
     _setupTicker() {
-
+        const sourceStream = new Stream();
+        sourceStream.readable = true;
         this.ticker = this.binance.ws.ticker(this.pair, async (ticker) => {
-            if (!this.processing) await this._calculateProfitExit(ticker.curDayClose);
+            this.sourceFinancialStream.emit('data', ticker.curDayClose);
+           // if (!this.processing) await this._calculateProfitExit(ticker.curDayClose);
         });
+    }
+
+
+    // TODO: This needs A LOT OF WORK - This is not at all a good take profit strategy
+    //       I need to have a better way to calculate the best time to take profit.
+    //
+    //        Considerations:
+    //        - Dump detection
+    //        - How NOT to get out too early  \__ Goldilocks zone
+    //        - How NOT to get out too late   /
+    //        - 
+    //
+
+    async _detectProfitSpike(spike) {
+        console.log(spike);
     }
 
     async _calculateProfitExit(currentPrice) {
@@ -140,47 +171,13 @@ class Binance {
             this.model.movement.falling++;
 
         var rateOfChange = this._rateOfChange(this.model.buyPrice, this.model.currentPrice);
-
         let termString = rateOfChange >= 0.00 ? `^#^g^w${rateOfChange.toFixed(2)}^` : `^#^r^w${rateOfChange.toFixed(2)}^`;
         term.moveTo(25, 5, `^yCHANGE:^ ${termString} ^yMOVEMENT:^s ^g${this.model.movement.rising} UP^ ^r${this.model.movement.falling} DOWN^`);
-
-        console.log(rateOfChange + ' ' + this.config.takeProfitPercentage);
-        
 
         if (rateOfChange >= this.config.takeProfitPercentage) {
             this._exit();
             await this._placeOrder('SELL', currentPrice);
         }
-
-        /*
-  
-        let index = this.model.prices.length;
-        this._log('Length: ' + index);
-  
-        if(this.model.prices[index-1] > this.model.prices[index-2])
-            this.model.movement.rising++;
-        if(this.model.prices[index-1] < this.model.prices[index-2])
-            this.model.movement.falling++;
-  
-        var rateOfChange = this._rateOfChange(this.model.prices[0], this.model.prices[index-1]);
-        
-        */
-/*
-
-        if (rateOfChange > 0.00 && (this.model.movement.rising >= this.model.movement.falling))
-            this._log('Keep Going ... ');
-        else {
-
-            if (rateOfChange > 0.00 && (this.model.movement.rising >= this.model.movement.falling))
-                this._log('Perhaps sell...');
-            else
-                this._log('Better Hold');
-
-        }
-*/
-
-        //this._log(this.model.movement);
-        //this._log(rateOfChange.toFixed(2));
 
         this.processing = false;
 
