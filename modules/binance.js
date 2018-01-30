@@ -114,7 +114,7 @@ class Binance {
             quantity: quantity
         });
 
-        term.moveTo(1, (7 + this.orderIncrement), `^#^g^w${type} ORDER^ ^yPRICE: ${price} QUANTITY: ${quantity}^`);
+        term.moveTo(1, (7 + this.orderIncrement), `^#^b^w${type} ORDER^ ^yPRICE:^ ^w${price}^ ^yQUANTITY:^ ^w${quantity}^`);
 
         this.currentOrder = order;
         this.processing = false;
