@@ -139,8 +139,8 @@ class Binance {
         const sourceStream = new Stream();
         sourceStream.readable = true;
         this.ticker = this.binance.ws.ticker(this.pair, async (ticker) => {
-            this.sourceFinancialStream.emit('data', ticker.curDayClose);
-           // if (!this.processing) await this._calculateProfitExit(ticker.curDayClose);
+            //this.sourceFinancialStream.emit('data', ticker.curDayClose);
+            if (!this.processing) await this._calculateProfitExit(ticker.curDayClose);
         });
     }
 
@@ -152,7 +152,7 @@ class Binance {
     //        - Dump detection
     //        - How NOT to get out too early  \__ Goldilocks zone
     //        - How NOT to get out too late   /
-    //        - 
+    //        - spike detection (time series analysis - fourier transform)
     //
 
     async _detectProfitSpike(spike) {
@@ -162,6 +162,8 @@ class Binance {
     async _calculateProfitExit(currentPrice) {
 
         this.processing = true;
+        
+        //this.model.prices.push(currentPrice);
 
         this.model.swap(currentPrice);
 
@@ -170,11 +172,11 @@ class Binance {
         if (this.model.currentPrice < this.model.lastPrice)
             this.model.movement.falling++;
 
-        var rateOfChange = this._rateOfChange(this.model.buyPrice, this.model.currentPrice);
-        let termString = rateOfChange >= 0.00 ? `^#^g^w${rateOfChange.toFixed(2)}^` : `^#^r^w${rateOfChange.toFixed(2)}^`;
+        var rateOfChange = this._rateOfChange(this.model.buyPrice, this.model.currentPrice).toFixed(2);
+        let termString = rateOfChange >= 0.00 ? `^#^g^w${rateOfChange}^` : `^#^r^w${rateOfChange}^`;
         term.moveTo(25, 5, `^yCHANGE:^ ${termString} ^yMOVEMENT:^s ^g${this.model.movement.rising} UP^ ^r${this.model.movement.falling} DOWN^`);
 
-        if (rateOfChange >= this.config.takeProfitPercentage) {
+        if (rateOfChange >= Number(this.config.takeProfitPercentage).toExponential(2)) {
             this._exit();
             await this._placeOrder('SELL', currentPrice);
         }
