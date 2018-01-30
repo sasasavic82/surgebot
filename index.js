@@ -16,12 +16,11 @@ const CONFIG = {
 
     let bin = new Binance(config);
 
-    console.log(`[SurgeBot] Initialized.`);
     await twilio.sendSms(`[SurgeBot] Initialized.`);
 
     coin.announced(async (announcement) => {
         let message = `[SurgeBot] Announced [$${announcement.coin}] on Binance. SurgeBot activated.`;
-        console.log(message);
+        //console.log(message);
         // If Twillio account enabled, send a message to a designated mobile number
         await twilio.sendSms(message);
 
