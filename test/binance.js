@@ -20,7 +20,7 @@ describe('Binance', function() {
             try {
                 const accountInfo = await Binance.binance.accountInfo();
                 assert(accountInfo, 'unable to receive balance');
-                assert(accountInfo.balances[0].asset === 'BTC', 'data has changed; wait for future update. unsafe to use TradeBot!');
+                assert(accountInfo.balances[0].asset === 'BTC', 'data has changed; wait for future update. unsafe to use SurgeBot');
                 //assert(accountInfo.balances[0].free > Number(process.env.budget), 'not enough funds in binance wallet to use TradeBot!');
                 done();
             } catch(err) {
